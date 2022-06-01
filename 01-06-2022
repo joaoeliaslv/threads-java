@@ -1,0 +1,58 @@
+package dia01_06_22;
+
+class CountDownClock implements Runnable{
+
+	public void run() {
+		for(int t = 20; t>=0; t--) {
+			System.out.println("T menos " + t);
+			try {
+				Thread.sleep(1000);
+			}
+			catch(InterruptedException e){
+				
+			}
+		}
+		
+	}
+	
+}
+
+class LaunchEvent implements Runnable{
+	private int start;
+	private String message;
+	
+	public LaunchEvent(int start, String message) {
+		this.start = start;
+		this.message = message;
+	}
+	
+	public void run() {
+		try {
+			Thread.sleep(20000 - (start*1000));
+		}
+		catch(InterruptedException e){
+			
+		}
+		System.out.println(message);
+	}
+}
+
+class Main{
+	public static void main(String[] args) {
+		CountDownClock cdc = new CountDownClock();
+		Runnable flood, ignition, liftoff;
+		flood = new LaunchEvent(16, "Flood the pad!");
+		ignition = new LaunchEvent(6, "Start engines!");
+		liftoff = new LaunchEvent(0, "Liftoff!");
+		
+		Thread clock = new Thread(cdc);
+		Thread tflood = new Thread(flood);
+		Thread tignition = new Thread(ignition);
+		Thread tliftoff = new Thread(liftoff);
+		
+		clock.start();
+		tflood.start();
+		tignition.start();
+		tliftoff.start();
+	}
+}
